@@ -30,3 +30,11 @@ changelog:
     exclude:
       - "^docs:"
       - "^test:"
+
+brews:
+  - name: rgbx
+    repository:
+      owner: AidanFogarty
+      name: homebrew-tap
+      token: "{{ .Env.GITHUB_TOKEN }}"
+    
