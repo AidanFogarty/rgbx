@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"os/exec"
 	"strconv"
 )
 
@@ -62,7 +63,13 @@ func main() {
 	}
 
 	hexCode := rgbToHex(red, green, blue)
-	fmt.Println(hexCode)
+	fmt.Println(hexCode, "\ncopied to clipboard ✅")
+
+	err = copyToClipboard(hexCode)
+	if err != nil {
+		fmt.Println("error:", err)
+		os.Exit(1)
+	}
 }
 
 func parseComponent(arg string, name string) (int, error) {
@@ -78,4 +85,14 @@ func parseComponent(arg string, name string) (int, error) {
 
 func rgbToHex(red, green, blue int) string {
 	return fmt.Sprintf("#%02X%02X%02X", red, green, blue)
+}
+
+func copyToClipboard(text string) error {
+	cmd := exec.Command("sh", "-c", fmt.Sprintf(`echo "%s" | pbcopy`, text))
+	err := cmd.Run()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
